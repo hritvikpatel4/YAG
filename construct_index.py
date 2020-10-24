@@ -10,16 +10,13 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from timer import Timer
 
-# ---------------------------------------- INIT ----------------------------------------
-
-folder_path = "C:\\Users\\hritv\\Documents\\College\\SEM 7\\E5_AIR\\project\\TelevisionNews"
-files = os.listdir(folder_path)
-
 # ---------------------------------------- Construct_index ----------------------------------------
 
 class Construct_index:
-	def __init__(self):
+	def __init__(self, folder_path):
 		self.indexes = list()
+		self.folder_path = folder_path
+		self.files = os.listdir(folder_path)
 	
 	# ---------------------------------------- PREPROCESS ----------------------------------------
 
@@ -105,7 +102,7 @@ class Construct_index:
 			Trie node: key, value pairs
 					   key - <term>, value- {docId1: [pos1, pos2, pos3...], docId2: [pos1,pos2...]} """
 		
-		file_path = folder_path + "\\" + file_path
+		file_path = os.path.join(self.folder_path, file_path)
 		df = self.pre_process(file_path)
 		corpus = df["Text"]
 
@@ -129,8 +126,7 @@ class Construct_index:
 		# Dont tell about this technique to others else we will lose our market share xD
 		
 		pool = multiprocessing.Pool(multiprocessing.cpu_count())
-		result = pool.map(self.construct_index_helper, files)
-		self.indexes.append(result)
+		self.indexes = pool.map(self.construct_index_helper, self.files)
 		pool.close()
 		pool.join()
 	
