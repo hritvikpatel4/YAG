@@ -29,15 +29,15 @@ if __name__ == '__main__':
 
         index_timer.start()
         index_construct.construct_index()
-        indexes = index_construct.collect_index()
+        indexes_data = index_construct.collect_index() #indexes and index_mapping
         index_timer.stop()
 
         # Write the index to a file
         with open(index_name, 'wb') as fp:
-            pickle.dump(indexes, fp)
+            pickle.dump(indexes_data, fp)
 
-    # Open index
+    print("Loading index")
+
+    # Load index
     with open(index_name, 'rb') as fp:
-        indexes = pickle.load(fp)
-
-    print(len(indexes[0]), type(indexes[0][1]))
+        indexes, index_mapping = pickle.load(fp)
