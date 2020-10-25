@@ -47,19 +47,19 @@ if __name__ == '__main__':
 
     # Query Loop
     while True:
-        print("Please type your query:")
-        q.text = input()
+        print("Please type your query (Do Ctrl+C anytime to exit):")
         
-        if q.text.lower() == "exit":
-            print("\nCleaning up and gracefully exiting...")
+        try:
+            q.text = input()
+            q.parse()
+
+            results = q.search(indexes)
+
+            for key, value in results.items():
+                print(index_mapping[key], value)
+            
+            print("\n----------\n")
+        
+        except KeyboardInterrupt:
+            print("\nGot Ctrl+C as input. Cleaning up and gracefully exiting...")
             sys.exit(1)
-        
-        q.parse()
-
-        # Check if index is specified in the query, if specified pass only that specific index
-        results = q.search(indexes)
-
-        for key, value in results.items():
-            print(index_mapping[key], value)
-        
-        print('\n------------\n')
