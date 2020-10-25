@@ -2,7 +2,7 @@
 
 # ---------------------------------------- IMPORT HERE ----------------------------------------
 
-import nltk, os, pickle
+import nltk, os, pickle, sys
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -22,7 +22,6 @@ index_name = 'indexfile'
 # ---------------------------------------- MAIN FUNCTION ----------------------------------------
 
 if __name__ == '__main__':
-
     if not(os.path.exists(index_name)): # Index has not been constructed yet
         print("Index is now being constructed.")
         index_timer = Timer(text = "Index construction complete! Time taken {:0.6f} seconds")
@@ -30,7 +29,7 @@ if __name__ == '__main__':
 
         index_timer.start()
         index_construct.construct_index()
-        indexes_data = index_construct.collect_index() #indexes and index_mapping
+        indexes_data = index_construct.collect_index() # Indexes and index_mapping
         index_timer.stop()
 
         # Write the index to a file
@@ -50,6 +49,11 @@ if __name__ == '__main__':
     while True:
         print("Please type your query:")
         q.text = input()
+        
+        if q.text.lower() == "exit":
+            print("\nCleaning up and gracefully exiting...")
+            sys.exit(1)
+        
         q.parse()
 
         # Check if index is specified in the query, if specified pass only that specific index
@@ -57,4 +61,5 @@ if __name__ == '__main__':
 
         for key, value in results.items():
             print(index_mapping[key], value)
+        
         print('\n------------\n')
