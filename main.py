@@ -8,6 +8,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from timer import Timer
 from construct_index import Construct_index
+from query import Query
 
 # ---------------------------------------- INIT ----------------------------------------
 
@@ -41,3 +42,19 @@ if __name__ == '__main__':
     # Load index
     with open(index_name, 'rb') as fp:
         indexes, index_mapping = pickle.load(fp)
+
+    # Initialize Query object
+    q = Query()
+
+    # Query Loop
+    while True:
+        print("Please type your query:")
+        q.text = input()
+        q.parse()
+
+        # Check if index is specified in the query, if specified pass only that specific index
+        results = q.search(indexes)
+
+        for key, value in results.items():
+            print(index_mapping[key], value)
+        print('\n------------\n')

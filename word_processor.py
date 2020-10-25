@@ -56,4 +56,5 @@ class Word_processor:
         return text
 
     def process(self, text):
+        """ Function to return processed form of a sentence """
         return self.my_lemmatize(self.remove_stopword(self.clean_text(text)))
