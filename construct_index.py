@@ -8,6 +8,7 @@ import pandas as pd
 from bidict import bidict
 from nltk.tokenize import word_tokenize
 from word_processor import Word_processor
+import math
 
 # ---------------------------------------- Construct_index ----------------------------------------
 
@@ -40,6 +41,16 @@ class Construct_index:
 		return df
 	
 	# ---------------------------------------- MISC ----------------------------------------
+	def add_tfidf(self, index_trie,rev_trie, cor_len):
+		index_trie_list=list(index_trie)
+		for term in index_trie_list:
+
+			idf= math.log(cor_len/(1+len(index_trie[term])),10)+1
+			
+			for docid in index_trie[term].keys():
+				tfidf=math.log(1+len(index_trie[term][docid][0]),10)*idf
+				index_trie[term][docid][1]= tfidf
+				rev_trie[term[::-1]][docid][1]=tfidf
 
 	def update_trie(self, term, docid, pos, trie):
 		""" Updating positional index """
@@ -47,13 +58,13 @@ class Construct_index:
 		if term in trie:
 			if docid in trie[term]:
 				# Insert into sorted list of positions
-				bisect.insort(trie[term][docid], pos)
+				bisect.insort(trie[term][docid][0], pos)
 				
 			else:
-				trie[term][docid] = [pos]
+				trie[term][docid] = [[pos],1]
 				
 		else:
-			trie[term] = {docid:[pos]}
+			trie[term] = {docid:[[pos],1]}
 	
 	# ---------------------------------------- INDEX CONSTRUCTION ----------------------------------------
 
@@ -78,6 +89,8 @@ class Construct_index:
 				self.update_trie(row[j], i, j, index_trie)
 				self.update_trie(row[j][::-1], i, j, rev_trie)
 
+		self.add_tfidf(index_trie,rev_trie,len(corpus))
+
 		return (index_trie, rev_trie)
 	
 	def construct_index(self):
@@ -86,11 +99,15 @@ class Construct_index:
 		# Lets call it the "Google Logic"
 		# Dont tell about this technique to others else we will lose our market share xD
 		
+		'''
 		pool = multiprocessing.Pool(multiprocessing.cpu_count())
 		self.indexes = pool.map(self.construct_index_helper, self.index_mapping.inverse)
 		pool.close()
 		pool.join()
+		'''
 
+		self.indexes = [self.construct_index_helper(self.index_mapping[i]) for i in self.index_mapping]
+		
 	# ---------------------------------------- INDEX STORE ----------------------------------------
 
 	def collect_index(self):
