@@ -99,14 +99,11 @@ class Construct_index:
 		# Lets call it the "Google Logic"
 		# Dont tell about this technique to others else we will lose our market share xD
 		
-		'''
 		pool = multiprocessing.Pool(multiprocessing.cpu_count())
 		self.indexes = pool.map(self.construct_index_helper, self.index_mapping.inverse)
 		pool.close()
 		pool.join()
-		'''
-
-		self.indexes = [self.construct_index_helper(self.index_mapping[i]) for i in self.index_mapping]
+		
 		
 	# ---------------------------------------- INDEX STORE ----------------------------------------
 
