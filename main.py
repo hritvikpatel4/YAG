@@ -2,14 +2,16 @@
 
 # ---------------------------------------- IMPORT HERE ----------------------------------------
 
+
 import nltk, os, pickle, sys
+import  os, pickle, sys
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from timer import Timer
 from construct_index import Construct_index
 from query import Query
-import ssl
+from ranking import Ranking
 
 # ---------------------------------------- INIT ----------------------------------------
 
@@ -55,6 +57,9 @@ if __name__ == '__main__':
     # Initialize Query object
     q = Query()
 
+    # Initialize Ranking object
+    r = Ranking()
+
     # Query Loop
     while True:
         print("Please type your query (Do Ctrl+C anytime to exit):")
@@ -69,6 +74,16 @@ if __name__ == '__main__':
                 print(index_mapping[key], value)
             
             print("\n----------\n")
+
+            print("Ranked results: ")
+            
+            final_results = r.rank_all(q.text, results, indexes, idf_dict)
+            
+            for docid, score, index in (final_results):
+                print("DocID: {:5}, Score: {:7.4f}, Index Number: {:5}".format(docid, score, index))
+
+            print("\n----------\n")
+            
         
         except KeyboardInterrupt:
             print("\nGot Ctrl+C as input. Cleaning up and gracefully exiting...")

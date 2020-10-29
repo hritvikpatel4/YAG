@@ -22,7 +22,7 @@ class Construct_index:
 			}
 		) # Store bidirectional mapping between index number and index name for fast two-way lookup
 		self.word_processor = Word_processor()
-		self.idf_dict={}
+		self.idf_dict = list()
 
 	# ---------------------------------------- PREPROCESS ----------------------------------------
 
@@ -42,20 +42,23 @@ class Construct_index:
 		return df
 	
 	# ---------------------------------------- MISC ----------------------------------------
-	def add_tfidf(self, index_trie,rev_trie, cor_len):
-		index_trie_list=list(index_trie)
-		idf_dict={}
+	def add_tfidf(self, index_trie, rev_trie, corpus_len):
+		""" tf-idf scores """
+
+		index_trie_list = list(index_trie) # list of terms in index
+		idf_dict = dict()
+
 		for term in index_trie_list:
 
-			idf= math.log(cor_len/(1+len(index_trie[term])),10)+1
-			idf_dict[term]=idf
+			idf = math.log(corpus_len / (1 + len(index_trie[term])), 10) + 1
+			idf_dict[term] = idf
 
 			for docid in index_trie[term].keys():
-				tfidf=math.log(1+len(index_trie[term][docid][0]),10)*idf
-				index_trie[term][docid][1]= tfidf
-				rev_trie[term[::-1]][docid][1]=tfidf
+				tfidf = math.log(1 + len(index_trie[term][docid][0]), 10) * idf
+				index_trie[term][docid][1] = tfidf
+				rev_trie[term[::-1]][docid][1] = tfidf
 
-		self.idf_dict= idf_dict
+		self.idf_dict.append(idf_dict)
 
 	def update_trie(self, term, docid, pos, trie):
 		""" Updating positional index """
@@ -94,7 +97,7 @@ class Construct_index:
 				self.update_trie(row[j], i, j, index_trie)
 				self.update_trie(row[j][::-1], i, j, rev_trie)
 
-		self.add_tfidf(index_trie,rev_trie,len(corpus))
+		self.add_tfidf(index_trie, rev_trie, len(corpus))
 
 		return (index_trie, rev_trie)
 	
@@ -104,11 +107,13 @@ class Construct_index:
 		# Lets call it the "Google Logic"
 		# Dont tell about this technique to others else we will lose our market share xD
 		
-		pool = multiprocessing.Pool(multiprocessing.cpu_count())
-		self.indexes = pool.map(self.construct_index_helper, self.index_mapping.inverse)
-		pool.close()
-		pool.join()
+		# pool = multiprocessing.Pool(multiprocessing.cpu_count())
+		# self.indexes = pool.map(self.construct_index_helper, self.index_mapping.inverse)
+		# pool.close()
+		# pool.join()
 		
+		self.indexes=list(map(self.construct_index_helper, self.index_mapping.inverse))
+	
 		
 	# ---------------------------------------- INDEX STORE ----------------------------------------
 

@@ -18,7 +18,7 @@ class Word_processor:
         data = []
 
         for word in text:
-            lword = lemmatizer.lemmatize(word)
+            lword = lemmatizer.lemmatize(str.lower(word))
             data.append(lword)
 
         return " ".join(data)
