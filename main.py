@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
         index_timer.start()
         index_construct.construct_index()
-        indexes_data = index_construct.collect_index() # Indexes and index_mapping
+        indexes_data = index_construct.collect_index() # Indexes ,index_mapping, idf_dict
         index_timer.stop()
 
         # Write the index to a file
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     # Load index
     with open(index_name, 'rb') as fp:
-        indexes, index_mapping = pickle.load(fp)
+        indexes, index_mapping, idf_dict = pickle.load(fp)
 
     # Initialize Query object
     q = Query()
