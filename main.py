@@ -66,12 +66,12 @@ if __name__ == '__main__':
         
         try:
             q.text = input()
-            q.parse()
+            q.parse(index_mapping)
 
             results = q.search(indexes)
 
-            for key, value in results.items():
-                print(index_mapping[key], value)
+            # for key, value in results.items():
+            #     print(key, index_mapping[key], value)
             
             print("\n----------\n")
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
             final_results = r.rank_all(q.text, results, indexes, idf_dict)
             
             for docid, score, index in (final_results):
-                print("DocID: {:5}, Score: {:7.4f}, Index Number: {:5}".format(docid, score, index))
+                print("DocID: {:5}, Score: {:7.4f}, Index Name: {:15}".format(docid, score, index_mapping[index]))
 
             print("\n----------\n")
             
