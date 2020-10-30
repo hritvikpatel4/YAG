@@ -1,6 +1,7 @@
 """ Ranking Class """
 
 # ---------------------------------------- IMPORT HERE ----------------------------------------
+
 import math
 
 # ---------------------------------------- Ranking ----------------------------------------
@@ -53,6 +54,3 @@ class Ranking:
         final = sorted(final, key = lambda x:-x[1]) # sorting in descending order based on score of document
 
         return final
-
-
-

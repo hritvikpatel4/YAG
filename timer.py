@@ -15,6 +15,7 @@ class TimerEndError(Error):
         self.message = message
 
 class Timer:
+
     def __init__(self, text="The task took a time of: {:0.6f} seconds"):
         """ Init the variables """
         self.start_time = None
@@ -33,7 +34,7 @@ class Timer:
             print(tse.message)
             exit(0)
 
-    def stop(self):
+    def stop_print(self):
         """ Stop the timer, and report the elapsed time """
         try:
             if self.start_time is None:
@@ -43,6 +44,22 @@ class Timer:
             self.start_time = None
         
             print(self.text.format(elapsed_time))
+
+        except TimerEndError as tee:
+            print()
+            print(tee.message)
+            exit(0)
+    
+    def stop_time(self):
+        """ Stop the timer, and report the elapsed time """
+        try:
+            if self.start_time is None:
+                raise TimerEndError("Timer is not running. Use .start() to start it")
+
+            elapsed_time = time.perf_counter() - self.start_time
+            self.start_time = None
+        
+            return elapsed_time
 
         except TimerEndError as tee:
             print()

@@ -7,6 +7,7 @@ from word_processor import Word_processor
 # ---------------------------------------- Query  ----------------------------------------
 
 class Query:
+    
     def __init__(self):
         self.word_processor = Word_processor()
         self.text = ""

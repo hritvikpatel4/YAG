@@ -10,6 +10,7 @@ from nltk.stem import WordNetLemmatizer
 # ---------------------------------------- Word_processor ----------------------------------------
 
 class Word_processor:
+    
     def my_lemmatize(self, text):
         """ Lemmatization """
 

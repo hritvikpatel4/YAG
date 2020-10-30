@@ -13,6 +13,7 @@ import math
 # ---------------------------------------- Construct_index ----------------------------------------
 
 class Construct_index:
+
 	def __init__(self, folder_path):
 		self.indexes = list() # List of indexes. One index for each csv file
 		self.folder_path = folder_path
