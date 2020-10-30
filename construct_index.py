@@ -22,7 +22,7 @@ class Construct_index:
 			}
 		) # Store bidirectional mapping between index number and index name for fast two-way lookup
 		self.word_processor = Word_processor()
-		self.idf_dict = list()
+		self.idf_list = list()
 
 	# ---------------------------------------- PREPROCESS ----------------------------------------
 
@@ -58,7 +58,7 @@ class Construct_index:
 				index_trie[term][docid][1] = tfidf
 				rev_trie[term[::-1]][docid][1] = tfidf
 
-		self.idf_dict.append(idf_dict)
+		return idf_dict
 
 	def update_trie(self, term, docid, pos, trie):
 		""" Updating positional index """
@@ -97,9 +97,9 @@ class Construct_index:
 				self.update_trie(row[j], i, j, index_trie)
 				self.update_trie(row[j][::-1], i, j, rev_trie)
 
-		self.add_tfidf(index_trie, rev_trie, len(corpus))
+		idf_dict=self.add_tfidf(index_trie, rev_trie, len(corpus))
 
-		return (index_trie, rev_trie)
+		return ((index_trie, rev_trie), idf_dict)
 	
 	def construct_index(self):
 		""" Interface for constructing index. Only this function is available to the client """
@@ -107,16 +107,21 @@ class Construct_index:
 		# Lets call it the "Google Logic"
 		# Dont tell about this technique to others else we will lose our market share xD
 		
-		# pool = multiprocessing.Pool(multiprocessing.cpu_count())
-		# self.indexes = pool.map(self.construct_index_helper, self.index_mapping.inverse)
-		# pool.close()
-		# pool.join()
+		pool = multiprocessing.Pool(multiprocessing.cpu_count())
+		index_info = pool.map(self.construct_index_helper, self.index_mapping.inverse)
+		pool.close()
+		pool.join()
 		
-		self.indexes=list(map(self.construct_index_helper, self.index_mapping.inverse))
-	
+		for ele in index_info:
+			# print(len(ele))
+			self.indexes.append(ele[0])
+			self.idf_list.append(ele[1])
+		
+		# print("FINAL LENGTH OF INDEX: ", len(self.indexes))
+		# print("FINAL LENGTH OF IDF: ", len(self.idf_list))
 		
 	# ---------------------------------------- INDEX STORE ----------------------------------------
 
 	def collect_index(self):
 		""" Returns the built-up index and mapping. Only this function is available to the client """
-		return self.indexes, self.index_mapping, self.idf_dict
+		return self.indexes, self.index_mapping, self.idf_list
