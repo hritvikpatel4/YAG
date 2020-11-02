@@ -36,7 +36,7 @@ class Word_processor:
         for word in not_to_delete:
             stop_words.remove(word)
 
-        word_tokens = word_tokenize(text)
+        word_tokens = text.split(' ')
         filtered_sentence = [w for w in word_tokens if not w in stop_words]
 
         return (" ".join(filtered_sentence))
@@ -46,10 +46,11 @@ class Word_processor:
 
         # decimals?
         text = text.replace("\n", " ").replace("\r", " ")
-        punclist = string.punctuation
+        punclist = string.punctuation.replace('*','')
 
         t = str.maketrans(dict.fromkeys(punclist, " "))
         text = text.translate(t)
+
 
         t = str.maketrans(dict.fromkeys("'`", ""))
         text = text.translate(t)

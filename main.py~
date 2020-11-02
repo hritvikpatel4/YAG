@@ -150,7 +150,7 @@ if __name__ == '__main__':
             print("\nGot Ctrl+C as input. Cleaning up and gracefully exiting...")
             
             # Cleaning up
-            #json_out.clear()
+            json_out.clear()
             del q
             del r
             
