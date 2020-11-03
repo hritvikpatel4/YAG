@@ -51,6 +51,6 @@ class Ranking:
                 score.append(index_num)
                 final.append(score) # score: [docid, score of document, index_num]
 
-        final = sorted(final, key = lambda x:-x[1]) # sorting in descending order based on score of document
+        final = sorted(final, key = lambda x: -x[1]) # sorting in descending order based on score of document
 
         return final

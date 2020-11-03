@@ -73,7 +73,7 @@ class Construct_index:
 				trie[term][docid] = [[pos],1]
 				
 		else:
-			trie[term] = {docid:[[pos],1]}
+			trie[term] = {docid: [[pos], 1]}
 	
 	# ---------------------------------------- INDEX CONSTRUCTION ----------------------------------------
 
@@ -98,7 +98,7 @@ class Construct_index:
 				self.update_trie(row[j], i, j, index_trie)
 				self.update_trie(row[j][::-1], i, j, rev_trie)
 
-		idf_dict=self.add_tfidf(index_trie, rev_trie, len(corpus))
+		idf_dict = self.add_tfidf(index_trie, rev_trie, len(corpus))
 
 		return ((index_trie, rev_trie), idf_dict)
 	
@@ -125,4 +125,5 @@ class Construct_index:
 
 	def collect_index(self):
 		""" Returns the built-up index and mapping. Only this function is available to the client """
+		
 		return self.indexes, self.index_mapping, self.idf_list

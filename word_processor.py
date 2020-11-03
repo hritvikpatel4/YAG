@@ -32,7 +32,7 @@ class Word_processor:
                     "own", "on", "off", "out", "through", "won", "against",
                     "now", "before", "after"]
 
-            # retaining some stopwords
+        # retaining some stopwords
         for word in not_to_delete:
             stop_words.remove(word)
 
@@ -59,4 +59,5 @@ class Word_processor:
 
     def process(self, text):
         """ Function to return processed form of a sentence """
+        
         return self.my_lemmatize(self.remove_stopword(self.clean_text(text)))

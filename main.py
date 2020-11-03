@@ -93,7 +93,7 @@ if __name__ == '__main__':
         try:
             q.text = input()
 
-            json_filename = q.text + "_" + time.strftime("%Y%m%d-%H%M%S") + ".result"
+            json_filename = q.text + "_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".result"
 
             q.parse(index_mapping)
 
@@ -150,7 +150,7 @@ if __name__ == '__main__':
             print("\nGot Ctrl+C as input. Cleaning up and gracefully exiting...")
             
             # Cleaning up
-            #json_out.clear()
+            # json_out.clear()
             del q
             del r
             

@@ -24,36 +24,41 @@ class Query:
         if '|' in self.text:
             self.text, index_name = self.text.split('|')
             index_name = index_name.strip() # Remove whitespace
+            
             try:
                 self.index_num = index_mapping.inverse[index_name]
+            
             except KeyError:
                 print("The index {} was not found. Searching on all indexes.".format(index_name))
+        
         self.text = self.word_processor.process(self.text).split(" ")
 
     # ---------------------------------------- SEARCH INDEXES ----------------------------------------
 
     def search(self, indexes):
         """ Searches through indexes and returns result """
+
         answers = dict() # Stores the results over all indexes
 
         if self.index_num is not None: # query specifies index
             index = indexes[self.index_num]
             answer = self.search_index(index)
             answers[self.index_num] = answer
+
             self.index_num = None # Reset for next query
             return answers
 
         for i, index in enumerate(indexes):
-
             answer = self.search_index(index)
 
             if answer != set():
                 answers[i] = answer # Mapping of Index id -> List of docid
-        
+
         return answers
 
     def search_index(self, index):
         """ Searches one index and returns the results. """
+        
         answer = None # Stores set of docid
 
         for term in self.text:
@@ -62,15 +67,18 @@ class Query:
             if '*' in term:
                 if answer is None:
                     answer = self.search_wildcard(index, term)
+
                 else:
                     # Perform set intersection of sets of docid for each term
                     wc_result = self.search_wildcard(index, term)
+
                     if wc_result is not None:
                         answer = answer.intersection(wc_result)
-                                    
-            elif index[0].has_key(term):                
+
+            elif index[0].has_key(term):
                 if answer is None:
                     answer = set(index[0][term].keys())
+                
                 else:
                     # Perform set intersection of sets of docid for each term
                     answer = answer.intersection(set(index[0][term].keys()))
@@ -88,26 +96,26 @@ class Query:
 
         is_suffix = 0
         results = list()
-            
+
         # handling suffix queries
-        if wc_term.startswith('*'): 
-            is_suffix = 1 
+        if wc_term.startswith('*'):
+            is_suffix = 1
             wc_term = wc_term[::-1] # reversing the term
             matched_info = self.find_match(index, wc_term, is_suffix)
 
             for item in matched_info:
                 results.extend(matched_info[item])
 
-            return set(results)  
+            return set(results)
            
         # handling prefix queries
-        elif wc_term.endswith('*'): 
+        elif wc_term.endswith('*'):
             matched_info = self.find_match(index, wc_term, is_suffix)
 
             for item in matched_info:
                 results.extend(matched_info[item])
 
-            return set(results)        
+            return set(results)
 
         # handling a*b type queries
         else:  
@@ -127,7 +135,6 @@ class Query:
             
             return set()  # return empty set if no term matches both, the prefix and suffix
 
-
     def find_match(self, index, wc_term, is_suffix):        
         """ Searches in either trie of an index based on prefix/suffix query 
             returns dictionary of terms matching the wildcard query: {<matching_term> : <list of docids>} """
@@ -136,7 +143,7 @@ class Query:
             # index[0] - normal trie (for prefix query)
             # index[1] - reverse trie (for suffix query)
             # finding elements that satisfy prefix
-            match_info = index[is_suffix].items(prefix = wc_term[0:len(wc_term)-1])
+            match_info = index[is_suffix].items(prefix = wc_term[0:len(wc_term) - 1])
             term_docids = dict()
 
             for i in range(len(match_info)):
@@ -148,8 +155,3 @@ class Query:
 
         except KeyError: # returning empty dictionary in case of key error due to prefix mismatch
             return dict()
-
-
-
-
-       

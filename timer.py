@@ -18,11 +18,13 @@ class Timer:
 
     def __init__(self, text="The task took a time of: {:0.6f} seconds"):
         """ Init the variables """
+        
         self.start_time = None
         self.text = text
     
     def start(self):
         """ Start a new timer """
+        
         try:
             if self.start_time is not None:
                 raise TimerStartError("Timer is running. Use .stop() to stop it")
@@ -36,6 +38,7 @@ class Timer:
 
     def stop_print(self):
         """ Stop the timer, and report the elapsed time """
+        
         try:
             if self.start_time is None:
                 raise TimerEndError("Timer is not running. Use .start() to start it")
@@ -52,6 +55,7 @@ class Timer:
     
     def stop_time(self):
         """ Stop the timer, and report the elapsed time """
+        
         try:
             if self.start_time is None:
                 raise TimerEndError("Timer is not running. Use .start() to start it")
