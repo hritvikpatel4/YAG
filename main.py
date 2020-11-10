@@ -4,6 +4,7 @@
 
 import itertools, json, nltk, os, pickle, sys, threading, time
 import pandas as pd
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -26,6 +27,7 @@ else:
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
 
 folder_path = os.path.relpath("../TelevisionNews")
 index_name = 'indexfile'
@@ -88,26 +90,45 @@ if __name__ == '__main__':
 
     # Query Loop
     while True:
+        print("Please choose your query type: (Do Ctrl+C anytime to exit):")
+        print("1. Normal")
+        print("2. Phrase Query")
+        print("3. Wildcard Query")
+        choice = int(input("Enter choice number: "))
+        print()
         print("Please type your query (Do Ctrl+C anytime to exit):")
-        
         try:
             q.text = input()
 
+            k = int(input("Enter K: ")) # to return top k documents
+            
             json_filename = q.text + "_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".result"
-
+             
             q.parse(index_mapping)
 
+            if choice == 2:
+                q.isPhrase = 1
+            
             results = q.search(indexes)
 
-            for key, value in results.items():
-                 print(key, index_mapping[key], value)
+            # for key, value in results.items():
+            #     print(key, index_mapping[key], value)
             print("\n----------\n")
             
-            '''
+            
             # Time the query
             query_timer = Timer()
             query_timer.start()
-            final_results = r.rank_all(q.text, results, indexes, idf_dict)
+            
+            if choice == 3: # indicates a wildcard query
+                isWC = 1
+            else:
+                isWC = 0
+                
+            final_results = r.rank_all(q.text, results, indexes, idf_dict, isWC)
+            print ("Ranking done")
+
+
             query_time = query_timer.stop_time()
 
             del query_timer
@@ -118,7 +139,7 @@ if __name__ == '__main__':
             json_out["results"] = len(final_results)
             json_out["hits"] = []
             
-            for docid, score, index in (final_results):
+            for docid, score, index in (final_results[:k]):
                 # print("DocID: {:5}, Score: {:7.4f}, Index Name: {:15}".format(docid, score, index_mapping[index]))
                 filepath = os.path.join(folder_path, index_mapping[index])
 
@@ -139,13 +160,14 @@ if __name__ == '__main__':
             # print(json.dumps(json_out, indent = 4))
 
             # Writing Json to file
+            json_filename = json_filename.replace('*','_')
             with open(json_filename, 'w') as json_outfile:
                 json.dump(json_out, json_outfile, indent = 4)
             
             json_out.clear()
 
             print("\nLook at the file named '{}' in the current directory for the output\n----------".format(json_filename))
-        '''
+    
         except KeyboardInterrupt:
             print("\nGot Ctrl+C as input. Cleaning up and gracefully exiting...")
             

@@ -11,10 +11,11 @@ class Query:
     def __init__(self):
         self.word_processor = Word_processor()
         self.text = ""
+        self.isPhrase = 0
         self.index_num = None # Holds value of specified index (if any)
 
     # ---------------------------------------- PARSE QUERY ----------------------------------------
-
+    
     def parse(self, index_mapping):
         """ Uses word_processor to parse query into tokens """
 
@@ -36,47 +37,92 @@ class Query:
     # ---------------------------------------- SEARCH INDEXES ----------------------------------------
 
     def search(self, indexes):
-        """ Searches through indexes and returns result """
-
+        """ Searches through indexes and returns result """       
+        
         answers = dict() # Stores the results over all indexes
+        
 
         if self.index_num is not None: # query specifies index
             index = indexes[self.index_num]
-            answer = self.search_index(index)
+            
+            if self.isPhrase:
+                answer = self.search_phrase(index)            
+            else:
+                answer = self.search_index(index)
+
             answers[self.index_num] = answer
 
             self.index_num = None # Reset for next query
+            
             return answers
 
-        for i, index in enumerate(indexes):
-            answer = self.search_index(index)
-
-            if answer != set():
-                answers[i] = answer # Mapping of Index id -> List of docid
+        if self.isPhrase:
+            for i, index in enumerate(indexes):
+                answer = self.search_phrase(index)
+                if answer != set():
+                    answers[i] = answer # Mapping of Index id -> List of docid
+                
+        else:
+            for i, index in enumerate(indexes):
+                answer = self.search_index(index)
+                if answer != set():
+                    answers[i] = answer # Mapping of Index id -> List of docid
 
         return answers
 
+    # ---------------------------------------- SEARCH ONE INDEX ----------------------------------------
+
     def search_index(self, index):
         """ Searches one index and returns the results. """
-        
-        answer = None # Stores set of docid
 
+        answer = set() # Stores set of docid
+        
         for term in self.text:
 
             # checking for wildcard operator in term
             if '*' in term:
-                if answer is None:
+                if answer == set():
                     answer = self.search_wildcard(index, term)
 
                 else:
                     # Perform set intersection of sets of docid for each term
                     wc_result = self.search_wildcard(index, term)
 
-                    if wc_result is not None:
-                        answer = answer.intersection(wc_result)
+                    # if wc_result is not None:
+                    #    answer = answer.intersection(wc_result)
+                        
+                    answer = answer.union(wc_result)
 
             elif index[0].has_key(term):
-                if answer is None:
+                if answer == set():
+                    answer = set(index[0][term].keys())
+                
+                else:
+                    # Perform set intersection of sets of docid for each term
+                    # answer = answer.intersection(set(index[0][term].keys()))
+                    answer = answer.union(set(index[0][term].keys()))
+
+            #else:
+            #    answer = set() # Term has not been found. answer is now empty set.
+
+        return answer
+
+    # ---------------------------------------- PHRASE QUERY ----------------------------------------
+
+    def search_phrase(self, index):        
+        """ Searches for a phrase in a given index.
+            Boolean AND of all terms followed by position check """ 
+
+        
+        # Boolean AND of all phrase terms
+
+        answer = None # Stores set of docid
+        
+        for term in self.text:
+    
+            if index[0].has_key(term):
+
+                if answer == None: # first term 
                     answer = set(index[0][term].keys())
                 
                 else:
@@ -85,8 +131,33 @@ class Query:
 
             else:
                 answer = set() # Term has not been found. answer is now empty set.
+        
+        # checking the positions of the phrase terms 
+        
+        t1 = self.text[0] # first term in the phrase
+        final = set()
 
-        return answer
+        for docid in answer:
+            t1_positions = index[0][t1][docid][0] # set
+            for pos in t1_positions:                
+                
+                flag = 0
+
+                for i in range(1, len(self.text)):                    
+                    t = self.text[i]
+                    ti_positions = index[0][t][docid][0] # set of positions for ith term in the phrase in that docid                   
+                    if pos + i not in ti_positions:
+                        flag = 1
+                        break 
+                
+                if flag == 0: # indicates an occurence of the phrase in that docid
+                    break
+
+            if flag == 0:
+                final.add(docid)  # add the docid that has an occurence of the phrase to the results
+        
+        return final           
+       
 
     # ---------------------------------------- WILDCARD QUERY ----------------------------------------
 

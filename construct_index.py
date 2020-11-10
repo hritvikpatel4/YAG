@@ -66,14 +66,12 @@ class Construct_index:
 		
 		if term in trie:
 			if docid in trie[term]:
-				# Insert into sorted list of positions
-				bisect.insort(trie[term][docid][0], pos)
-				
+				trie[term][docid][0].add(pos)				
 			else:
-				trie[term][docid] = [[pos],1]
+				trie[term][docid] = [set((pos,)),1]
 				
 		else:
-			trie[term] = {docid: [[pos], 1]}
+			trie[term] = {docid: [set((pos,)), 1]}
 	
 	# ---------------------------------------- INDEX CONSTRUCTION ----------------------------------------
 
