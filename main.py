@@ -90,44 +90,42 @@ if __name__ == '__main__':
 
     # Query Loop
     while True:
-        print("Please choose your query type: (Do Ctrl+C anytime to exit):")
-        print("1. Normal")
-        print("2. Phrase Query")
-        print("3. Wildcard Query")
-        choice = int(input("Enter choice number: "))
-        print()
-        print("Please type your query (Do Ctrl+C anytime to exit):")
         try:
+            print("Please choose your query type: (Do Ctrl+C anytime to exit):")
+            print("1. Normal")
+            print("2. Phrase Query")
+            print("3. Wildcard Query")
+            choice = int(input("Enter choice number: "))
+            print()
+            print("Please type your query (Do Ctrl+C anytime to exit):")
+
+
             q.text = input()
 
             k = int(input("Enter K: ")) # to return top k documents
             
-            json_filename = q.text + "_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".result"
-
+            #json_filename = q.text + "_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".result"
+            json_filename = "results.json"
+            
             q.parse(index_mapping)
             
             if choice == 2:
                 q.isPhrase = 1
-            
+            elif choice == 3: # indicates a wildcard query
+                q.isWC = 1
+
             results = q.search(indexes)
 
             # for key, value in results.items():
             #     print(key, index_mapping[key], value)
             print("\n----------\n")
             
-            
             # Time the query
             query_timer = Timer()
             query_timer.start()
-            
-            if choice == 3: # indicates a wildcard query
-                isWC = 1
-            else:
-                isWC = 0
-                
-            final_results = r.rank_all(q.text, results, indexes, idf_dict, isWC)
-            print ("Ranking done")
 
+            final_results = r.rank_all(q.text, results, indexes, idf_dict, q.isWC)
+            print ("Ranking done")
 
             query_time = query_timer.stop_time()
 
@@ -145,6 +143,7 @@ if __name__ == '__main__':
 
                 pd_dataframe = pd.read_csv(filepath)
                 snippet_column = pd_dataframe["Snippet"]
+                #text_column = pd_dataframe["Text"]
                 url_column = pd_dataframe["URL"]
                 
                 json_out["hits"].append({
@@ -153,7 +152,8 @@ if __name__ == '__main__':
                     '_doc_id': docid,
                     '_path': filepath,
                     '_url': url_column[docid],
-                    '_snippet': snippet_column[docid]
+                    '_snippet': snippet_column[docid],
+                    #'_text' : text_column[docid]
                 })
             
             # Uncomment the below line to print json onto the console
@@ -177,3 +177,7 @@ if __name__ == '__main__':
             del r
             
             sys.exit(1)
+        
+        except ValueError:
+            print("\nPlease enter valid choice\n")
+            continue

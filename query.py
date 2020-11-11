@@ -12,6 +12,7 @@ class Query:
         self.word_processor = Word_processor()
         self.text = ""
         self.isPhrase = 0
+        self.isWC = 0
         self.index_num = None # Holds value of specified index (if any)
 
     # ---------------------------------------- PARSE QUERY ----------------------------------------
@@ -45,7 +46,9 @@ class Query:
         if self.index_num is not None: # query specifies index
             index = indexes[self.index_num]
             
-            if self.isPhrase:
+            if self.isWC:
+                answer = self.search_wc_sent(index) 
+            elif self.isPhrase:
                 answer = self.search_phrase(index)            
             else:
                 answer = self.search_index(index)
@@ -56,7 +59,13 @@ class Query:
             
             return answers
 
-        if self.isPhrase:
+        if self.isWC:
+            for i, index in enumerate(indexes):
+                answer = self.search_wc_sent(index)
+                if answer != set():
+                    answers[i] = answer # Mapping of Index id -> List of docid
+
+        elif self.isPhrase:
             for i, index in enumerate(indexes):
                 answer = self.search_phrase(index)
                 if answer != set():
@@ -71,39 +80,24 @@ class Query:
         return answers
 
     # ---------------------------------------- SEARCH ONE INDEX ----------------------------------------
-
+    #     
     def search_index(self, index):
         """ Searches one index and returns the results. """
 
         answer = set() # Stores set of docid
-        
+
         for term in self.text:
-
-            # checking for wildcard operator in term
-            if '*' in term:
-                if answer == set():
-                    answer = self.search_wildcard(index, term)
-
-                else:
-                    # Perform set intersection of sets of docid for each term
-                    wc_result = self.search_wildcard(index, term)
-
-                    # if wc_result is not None:
-                    #    answer = answer.intersection(wc_result)
-                        
-                    answer = answer.union(wc_result)
-
-            elif index[0].has_key(term):
+            if index[0].has_key(term):
                 if answer == set():
                     answer = set(index[0][term].keys())
-                
+                    
                 else:
                     # Perform set intersection of sets of docid for each term
                     # answer = answer.intersection(set(index[0][term].keys()))
                     answer = answer.union(set(index[0][term].keys()))
 
-            #else:
-            #    answer = set() # Term has not been found. answer is now empty set.
+                #else:
+                #    answer = set() # Term has not been found. answer is now empty set.
 
         return answer
 
@@ -160,6 +154,39 @@ class Query:
        
 
     # ---------------------------------------- WILDCARD QUERY ----------------------------------------
+
+    def search_wc_sent(self,index):
+
+        answer=set() # Stores set of docid
+
+        for term in self.text:
+            # checking for wildcard operator in term
+            if '*' in term:
+                if answer == set():
+                    answer = self.search_wildcard(index, term)
+
+                else:
+                    # Perform set intersection of sets of docid for each term
+                    wc_result = self.search_wildcard(index, term)
+
+                    # if wc_result is not None:
+                    #    answer = answer.intersection(wc_result)
+                        
+                    answer = answer.intersection(wc_result)
+            elif index[0].has_key(term):
+                if answer == set():
+                    answer = set(index[0][term].keys())
+                    
+                else:
+                    # Perform set intersection of sets of docid for each term
+                    # answer = answer.intersection(set(index[0][term].keys()))
+                    answer = answer.intersection(set(index[0][term].keys()))
+
+                #else:
+                #    answer = set() # Term has not been found. answer is now empty set.
+
+        return answer
+
 
     def search_wildcard(self, index, wc_term):
         """ Searches in one index based on wildcard query for a single term

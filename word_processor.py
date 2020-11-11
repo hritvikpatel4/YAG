@@ -76,9 +76,7 @@ class Word_processor:
 
         # decimals?
         text = text.replace("\n", " ").replace("\r", " ")
-        punclist = string.punctuation.replace('*','')
-
-        print(punclist)
+        punclist = string.punctuation.replace("*","")
 
         t = str.maketrans(dict.fromkeys(punclist, " "))
         text = text.translate(t)

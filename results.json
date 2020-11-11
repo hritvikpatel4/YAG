@@ -1,0 +1,86 @@
+{
+    "query_time": 0.025963177000008386,
+    "results": 73988,
+    "hits": [
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 1,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170118_190000_BBC_News#start/1246/end/1281",
+            "_snippet": "it's beaten it by about 0.1, 0.12 degrees celsius. which doesn't seem like a lot, but in terms of the yearly variations, it is actually huge. part of this rise was caused by an el nino event, a warm ocean current that disrupts the world's weather. but scientists say greenhouse gases"
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 2,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170105_213000_Outside_Source#start/1111/end/1146",
+            "_snippet": "contact more than expected, how. your co nta ct le ns more than expected, how. your contact lens has come out of your eye, good catch!. what does i do in terms of policy, already there is a pushback on global warming. interesting to see this against the backdrop of president trump coming into the oval office, saying things like climate change is something"
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 4,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170111_030000_BBC_News#start/696/end/731",
+            "_snippet": "applause climate change, a controversial issue which has seen him at odds with the incoming president, was next on the speech agenda. take the challenge climate change."
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 5,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170118_133000_BBC_News#start/1266/end/1301",
+            "_snippet": "with mr trump's thinking. he's a former attorney general. he's an interesting pic, given that he is actually a climate change the nye. many people -- climate change            _"
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 6,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170130_231500_Newsnight#start/1414/end/1449",
+            "_snippet": "the problems we are facing today in europe? climate change?"
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 8,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170110_020000_BBC_News#start/640/end/675",
+            "_snippet": "patrol on the far side. meanwhile, in italy, there are christmas card scenes a little after the event. only a few years ago, such images were commonplace in january across europe, but after five years of global warming,"
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 11,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170117_190000_BBC_News#start/3319/end/3354",
+            "_snippet": "barack obama. i did, i reminded him, donald trump when a message back, to learn more about climate change and"
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 13,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170110_023000_Monday_in_Parliament#start/19/end/54",
+            "_snippet": "brazil's government is defending its plan to build dozens of huge hydro-electric dams. it argues the project will boost the economy and provide clean energy. environmentalists say the plan is a disaster for the amazon and will actually result in more deforestation and global warming."
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 14,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170129_060000_Breakfast#start/790/end/825",
+            "_snippet": "and immigration policy, suggesting prince charles and donald trump could go head-to-head in a row over climate change. the president will not take a lecture from the prince, it said, but of course prince charles is very active and vocal in the field of climate change."
+        },
+        {
+            "_index": "BBCNEWS.201701.csv",
+            "_score": 1,
+            "_doc_id": 15,
+            "_path": "../TelevisionNews/BBCNEWS.201701.csv",
+            "_url": "https://archive.org/details/BBCNEWS_20170125_230000_BBC_News#start/403/end/438",
+            "_snippet": "mps queued to offer issues where she could take on the new president. he must abide by and not withdraw from the paris climate change treaty."
+        }
+    ]
+}
