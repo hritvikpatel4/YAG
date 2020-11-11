@@ -72,15 +72,8 @@ class Construct_index:
 				
 		else:
 			trie[term] = {docid: [set((pos,)), 1]}
-
-	def update_revtrie(self, term, docid, pos, trie):
-		""" Updating positional index """
-		
-		if term in trie:
-			trie[term][docid] = []
+	
 				
-		else:
-			trie[term] = {docid: []}
 	
 	# ---------------------------------------- INDEX CONSTRUCTION ----------------------------------------
 
@@ -103,7 +96,8 @@ class Construct_index:
 
 			for j in range(len(row)):
 				self.update_trie(row[j], i, j, index_trie)
-				self.update_revtrie(row[j][::-1], i, j, rev_trie)
+				rev_term = row[j][::-1]
+				rev_trie[rev_term] = index_trie[row[j]]
 
 		idf_dict = self.add_tfidf(index_trie, rev_trie, len(corpus))
 
