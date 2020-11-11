@@ -157,12 +157,12 @@ class Query:
 
     def search_wc_sent(self,index):
 
-        answer=set() # Stores set of docid
+        answer=None # Stores set of docid
 
         for term in self.text:
             # checking for wildcard operator in term
             if '*' in term:
-                if answer == set():
+                if answer == None:
                     answer = self.search_wildcard(index, term)
 
                 else:
@@ -174,7 +174,7 @@ class Query:
                         
                     answer = answer.intersection(wc_result)
             elif index[0].has_key(term):
-                if answer == set():
+                if answer == None:
                     answer = set(index[0][term].keys())
                     
                 else:
@@ -182,8 +182,8 @@ class Query:
                     # answer = answer.intersection(set(index[0][term].keys()))
                     answer = answer.intersection(set(index[0][term].keys()))
 
-                #else:
-                #    answer = set() # Term has not been found. answer is now empty set.
+            else:
+                answer = set() # Term has not been found. answer is now empty set.
 
         return answer
 
