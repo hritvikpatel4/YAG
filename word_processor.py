@@ -33,7 +33,9 @@ class Word_processor:
 
         lemmatizer = WordNetLemmatizer()
         
-        text_new = list(map(str.lower, nltk.word_tokenize(text)))
+        #text_new = list(map(str.lower, nltk.word_tokenize(text)))
+        text_new = list(map(str.lower, text.split(' ')))
+        
         #tokenize the sentence and find the POS tag for each token
         nltk_tagged = nltk.pos_tag(text_new)  
         
@@ -76,9 +78,10 @@ class Word_processor:
         text = text.replace("\n", " ").replace("\r", " ")
         punclist = string.punctuation.replace('*','')
 
+        print(punclist)
+
         t = str.maketrans(dict.fromkeys(punclist, " "))
         text = text.translate(t)
-
 
         t = str.maketrans(dict.fromkeys("'`", ""))
         text = text.translate(t)

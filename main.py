@@ -103,9 +103,9 @@ if __name__ == '__main__':
             k = int(input("Enter K: ")) # to return top k documents
             
             json_filename = q.text + "_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".result"
-             
-            q.parse(index_mapping)
 
+            q.parse(index_mapping)
+            
             if choice == 2:
                 q.isPhrase = 1
             
