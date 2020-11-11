@@ -34,7 +34,7 @@ class Word_processor:
         lemmatizer = WordNetLemmatizer()
         
         #text_new = list(map(str.lower, nltk.word_tokenize(text)))
-        text_new = list(map(str.lower, text.split(' ')))
+        text_new = list(map(str.lower, text.split()))
         
         #tokenize the sentence and find the POS tag for each token
         nltk_tagged = nltk.pos_tag(text_new)  
