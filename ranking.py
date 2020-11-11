@@ -53,7 +53,7 @@ class Ranking:
                     for docid in answers[index_num]:
                         final.append([docid, 1, index_num]) # score: [docid, score of document, index_num]
             
-            return final   
+                return final   
             
             query = new_query     
          
