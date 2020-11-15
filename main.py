@@ -114,7 +114,7 @@ if __name__ == '__main__':
     q = Query()
 
     # Initialize Ranking object
-    r = Ranking()
+    r = Ranking(1)
 
     # Initialize JSON Output
     json_out = dict()
@@ -127,14 +127,31 @@ if __name__ == '__main__':
             print("2. Phrase Query")
             print("3. Wildcard Query")
             choice = int(input("Enter choice number: ").strip())
+            
+            if choice > 3 or choice <1:
+                print("Invalid choice")
+                continue
+            
+            print("Please choose your ranking type: (Do Ctrl+C anytime to exit):")
+            print("1. Cosine Similarity")
+            print("2. Summation of tf-idf scores w.r.t document")
+            print("3. Summation of (tf-idf w.r.t doc * tf-idf w.r.t query)  ")
+            r_choice = int(input("Enter choice number: "))
+            print()
+            r.choice = r_choice
 
+            if r.choice > 3 or r.choice <1:
+                print("Invalid choice")
+                continue
+            
             print("\nPlease type your query (Do {} anytime to exit):".format(exit_command))
             q.text = input()
 
             k = int(input("Enter K (Top K documents will be returned): ")) # to return top k documents
 
-            json_filename = "(" + q.text + ")+" + time.strftime("%Y-%m-%d__%H-%M-%S") + ".json"
+            #json_filename = "(" + q.text + ")+" + time.strftime("%Y-%m-%d__%H-%M-%S") + ".json"
             # json_filename = "results.json"
+            json_filename = "results" + str(choice) + "_" + str(r_choice) + ".json"  
 
             q.parse(index_mapping)
 

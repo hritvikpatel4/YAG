@@ -8,11 +8,40 @@ import math
 
 class Ranking:
 
-    def __init__(self):
-        pass
+    def __init__(self, choice):
+        self.choice = choice
     
     # ---------------------------------------- COMPUTE SCORE ----------------------------------------------------------
+      
+    def compute_score(self, query, docid, index_trie, tfidf_query):
+        """ Computes score for each document w.r.t the query """
         
+        tot_score = 0        
+        doc_tot_score = 0
+        length_td = 0
+        length_tq = 0
+
+        for term in query:
+            if term in index_trie and docid in index_trie[term]:
+                tfidf_doc = index_trie[term][docid][1]
+            else:
+                tfidf_doc = 0
+
+            doc_tot_score += tfidf_doc
+            tot_score += (tfidf_doc * tfidf_query[term]) # tf-idf w.r.t document * tf-idf w.r.t query
+            length_td += (tfidf_doc * tfidf_doc)
+            length_tq += (tfidf_query[term] * tfidf_query[term])
+
+        if self.choice == 1:
+            final_score = tot_score / (math.sqrt(length_tq) * math.sqrt(length_td))
+        elif self.choice == 2:
+            final_score = doc_tot_score 
+        elif self.choice == 3:
+            final_score = tot_score
+
+        return [docid, final_score]
+    '''
+
     def compute_score(self, query, docid, index_trie, tfidf_query):
         """ Computes score for each document w.r.t the query """
         
@@ -25,14 +54,15 @@ class Ranking:
                 tfidf_doc = index_trie[term][docid][1]
             else:
                 tfidf_doc = 0
-
+            
+            #option 1
             tot_score += (tfidf_doc * tfidf_query[term]) # tf-idf w.r.t document * tf-idf w.r.t query
-            length_td += (tfidf_doc * tfidf_doc)
-            length_tq += (tfidf_query[term] * tfidf_query[term])
-
-        tot_score = tot_score / (math.sqrt(length_tq) * math.sqrt(length_td))
+            # option 2
+            #tot_score += (tfidf_doc)
+            
+            
         return [docid, tot_score]
-
+    '''
     # ---------------------------------------- RANK RESULTS -----------------------------------------------------------
     
     def rank_all(self, query, answers, indexes, idf_dict, isWC = 0):
