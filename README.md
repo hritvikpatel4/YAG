@@ -5,7 +5,7 @@ Search Engine Implementation in Python
 This project was implemented as part of a course.
 
 The problem statement:
-1. Build a search engine for Environmental News NLP archive.
+1. Build a search engine for [Environmental News NLP archive](https://www.kaggle.com/amritvirsinghx/environmental-news-nlp-dataset).
 2. Build a corpus for archive with at least 418 documents.
 
 Our search engine is capable of the following query types
@@ -53,10 +53,10 @@ python3 main.py
 
 ## Authors
 
-* **Archana Prakash** - [GitHub](https://github.com/ArchPrak) - [Email](mailto:arch.2421@gmail.com)
-* **Hritvik Patel**  - [GitHub](https://github.com/hritvikpatel4) - [Email](mailto:hritvik.patel4@gmail.com)
-* **Shreyas BS** - [GitHub](https://github.com/sriramsk1999) - [Email](mailto:bsshreyas99@gmail.com)
-* **Sriram SK** - [GitHub](https://github.com/bsshreyas99) - [Email](mailto:sriramsk1999@gmail.com)
+* **Archana Prakash** - [GitHub](https://github.com/ArchPrak)
+* **Hritvik Patel**  - [GitHub](https://github.com/hritvikpatel4)
+* **Shreyas BS** - [GitHub](https://github.com/bsshreyas99)
+* **Sriram SK** - [GitHub](https://github.com/sriramsk1999)
 
 ## License
 
