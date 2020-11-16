@@ -5,7 +5,7 @@ Search Engine Implementation in Python
 This project was implemented as part of a course.
 
 The problem statement:
-1. Build a search engine for Environmental News NLP archive.
+1. Build a search engine for [Environmental News NLP archive](https://www.kaggle.com/amritvirsinghx/environmental-news-nlp-dataset).
 2. Build a corpus for archive with at least 418 documents.
 
 Our search engine is capable of the following query types
