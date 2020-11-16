@@ -22,9 +22,9 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 # Install "elasticsearch", "elasticsearch_dsl" & "elasticsearch-loader"
-subprocess.run([sys.executable, "-m", "pip", "install", "elasticsearch"])
-subprocess.run([sys.executable, "-m", "pip", "install", "elasticsearch_dsl"])
-subprocess.run([sys.executable, "-m", "pip", "install", "elasticsearch-loader"])
+#subprocess.run([sys.executable, "-m", "pip", "install", "elasticsearch"])
+#subprocess.run([sys.executable, "-m", "pip", "install", "elasticsearch_dsl"])
+#subprocess.run([sys.executable, "-m", "pip", "install", "elasticsearch-loader"])
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     atexit.register(cleanup)
 
-    print("\nMake sure you have started Elasticsearch. To do that, go to 'elasticsearch-7.9.3/bin/' & run 'elasticsearch.bat' -> Windows or 'elasticsearch' -> Other Platforms")
+    #print("\nMake sure you have started Elasticsearch. To do that, go to 'elasticsearch-7.9.3/bin/' & run 'elasticsearch.bat' -> Windows or 'elasticsearch' -> Other Platforms")
 
     # TODO: This file 'elasticsearch_index.py' will be added later on. There is some minor issue with it.
     # print("\nMake sure you run 'elasticsearch_index.py' to index the dataset for elasticsearch")
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     # Load index
     print()
     load_index_timer = Timer(text = "\nLoading index complete! Time taken {:0.6f} seconds")
-    t = threading.Thread(target = progress_bar) # Brains behind the progress animation :)
+    t = threading.Thread(target = progress_bar) # Progress animation
     t.start()
 
     load_index_timer.start()
@@ -159,14 +159,14 @@ if __name__ == '__main__':
             elif choice == 3: # indicates a wildcard query
                 q.isWC = 1
 
+            # Time the query
+            query_timer = Timer()
+            query_timer.start()
+
             results = q.search(indexes)
 
             # for key, value in results.items():
             #     print(key, index_mapping[key], value)
-
-            # Time the query
-            query_timer = Timer()
-            query_timer.start()
 
             final_results = r.rank_all(q.text, results, indexes, idf_dict, q.isWC)
 

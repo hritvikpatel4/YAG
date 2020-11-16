@@ -92,7 +92,7 @@ class Query:
                     answer = set(index[0][term].keys())
                     
                 else:
-                    # Perform set intersection of sets of docid for each term
+                    # Perform set union of sets of docid for each term
                     # answer = answer.intersection(set(index[0][term].keys()))
                     answer = answer.union(set(index[0][term].keys()))
 

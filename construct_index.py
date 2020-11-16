@@ -105,9 +105,6 @@ class Construct_index:
 	
 	def construct_index(self):
 		""" Interface for constructing index. Only this function is available to the client """
-		# Here is the secret to the fast processing :)
-		# Lets call it the "Google Logic"
-		# Dont tell about this technique to others else we will lose our market share xD
 		
 		pool = multiprocessing.Pool(multiprocessing.cpu_count())
 		index_info = pool.map(self.construct_index_helper, self.index_mapping.inverse)
